@@ -74,7 +74,7 @@ const CameraScreen = ({navigation}: {navigation: any}) => {
 
   const renderCameraActions = (name: string) => {
     return (
-      <TouchableOpacity onPress={onPressCameraAction} style={styles.capture}>
+      <TouchableOpacity onPress={()=> onPressCameraAction(name)} style={styles.capture}>
         <Text style={{fontSize: 14}}>{name}</Text>
       </TouchableOpacity>
     );
