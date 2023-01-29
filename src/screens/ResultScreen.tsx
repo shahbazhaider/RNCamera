@@ -7,33 +7,23 @@ const ResultScreen = props => {
   const renderImage = () => (
     <Image
       style={styles.imageStyle}
+      resizeMode='contain'
       source={{
-        uri: imageData.uri,
+        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png',
       }}
     />
   );
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.myGalleryText}>My Gallery</Text>
-      {renderImage()}
-    </View>
-  );
+  return <View style={styles.container}>{renderImage()}</View>;
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 10,
-    marginTop: 30,
-  },
-  myGalleryText: {
-    fontSize: 18,
-    marginBottom: 10,
+    padding: 30,
   },
   imageStyle: {
-    aspectRatio: 1,
-    margin: 5,
-    borderRadius: 10,
+    height: '100%',
+    width: '100%',
   },
 });
 
