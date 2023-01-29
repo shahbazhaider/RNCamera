@@ -1,36 +1,22 @@
-import React, {useCallback} from 'react';
-import {useFocusEffect} from '@react-navigation/core';
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
-import useReadDirectory from '@/hooks/useReadDirectory';
+const ResultScreen = props => {
+  const imageData = props.route.params;
 
-const ResultScreen = () => {
-  //Hook to read image for Local Directory
-  const {readDirectory, pics} = useReadDirectory();
-
-  useFocusEffect(
-    useCallback(() => {
-      readDirectory();
-    }, []),
-  );
-
-  const renderImage = (item: any) => (
+  const renderImage = () => (
     <Image
-      key={String(item?.name)}
       style={styles.imageStyle}
-      source={{uri: 'file://' + item.path}}
+      source={{
+        uri: imageData.uri,
+      }}
     />
   );
 
   return (
     <View style={styles.container}>
       <Text style={styles.myGalleryText}>My Gallery</Text>
-      <FlatList
-        data={pics}
-        keyExtractor={item => item?.name}
-        numColumns={2}
-        renderItem={({item}) => renderImage(item)}
-      />
+      {renderImage()}
     </View>
   );
 };
@@ -38,14 +24,13 @@ const ResultScreen = () => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 10,
-    marginVertical: 20,
+    marginTop: 30,
   },
   myGalleryText: {
     fontSize: 18,
     marginBottom: 10,
   },
   imageStyle: {
-    flex: 1,
     aspectRatio: 1,
     margin: 5,
     borderRadius: 10,

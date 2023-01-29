@@ -1,32 +1,17 @@
 import RNFS from 'react-native-fs';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {RNCamera} from 'react-native-camera';
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View,} from 'react-native';
 
-import useAndroidPermissions from '@/hooks/useAndroidPermissions';
-import {cameraActions} from '@/utils/helper';
+import {cameraActions} from '../utils/helper';
 
 export const folder = RNFS.ExternalDirectoryPath + '/RNCamera';
 
-const CameraScreen = ({navigation}: {navigation: any}) => {
+const CameraScreen = ({navigation}: { navigation: any }) => {
   const isDarkMode = useColorScheme() === 'dark';
   let cameraRef = useRef<RNCamera>(null);
   const [cameraType, setCameraType] = useState(RNCamera.Constants.Type.back);
   const [flash, setFlash] = useState(RNCamera.Constants.FlashMode.off);
-
-  //Hooks to for Read and Write Permissions in Android
-  const {checkPermissions} = useAndroidPermissions();
-
-  useEffect(() => {
-    checkPermissions();
-  }, []);
 
   const takePicture = async () => {
     if (cameraRef) {
@@ -34,13 +19,7 @@ const CameraScreen = ({navigation}: {navigation: any}) => {
         quality: 0.5,
       });
 
-      if (data) {
-        await RNFS.moveFile(
-          data.uri,
-          folder + '/' + Date.now() + '.' + data.uri.split('.').pop(),
-        );
-        navigation.navigate('ResultScreen');
-      }
+      navigation.navigate('ResultScreen', {imageData: data});
     }
   };
 
@@ -74,9 +53,11 @@ const CameraScreen = ({navigation}: {navigation: any}) => {
 
   const renderCameraActions = (name: string) => {
     return (
-      <TouchableOpacity onPress={()=> onPressCameraAction(name)} style={styles.capture}>
-        <Text style={{fontSize: 14}}>{name}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => onPressCameraAction(name)}
+            style={styles.capture}>
+          <Text style={{fontSize: 14}}>{name}</Text>
+        </TouchableOpacity>
     );
   };
 
@@ -111,7 +92,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'black',
   },
   preview: {
     flex: 1,
